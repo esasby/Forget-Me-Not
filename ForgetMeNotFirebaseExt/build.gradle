@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+ext.module_group = "by.esas.forgetmenot"
+ext.module_name = "firebase"
+
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'

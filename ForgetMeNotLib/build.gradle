@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
-ext.module_group = "by.esas.forgetmenot"
-ext.module_name = "core"
-
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-kapt'
+
+apply plugin: 'com.github.dcendents.android-maven'
+group = 'com.github.esasby'
 
 android {
     compileSdkVersion 29

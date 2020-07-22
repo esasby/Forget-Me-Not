@@ -1,0 +1,66 @@
+query recognize($faceImages: [ImageBase64Input], $group: String, $allowCreateId: Boolean) {
+    vectorize(faces: $faceImages, model: DEFAULT) {
+        status
+    }
+    
+    identify(model: DEFAULT, maxcandidatesreturned: 3, confidencethreshold: 0.5, group: $group, allowcreateuserid: $allowCreateId) {
+        status,
+        id,
+        candidates {
+            id,
+            probability
+        }
+    }
+}
+
+query recognizeWithLandmarks($faceImages: [ImageBase64Input], $faceLandmarks: [LandmarksInput], $group: String, $allowCreateId: Boolean) {
+    preprocess (faces: $faceImages, landmarks: $faceLandmarks, model: DEFAULT) {
+        status
+    }
+    
+    vectorize(model: DEFAULT) {
+        status
+    }
+    
+    identify(model: DEFAULT, maxcandidatesreturned: 3, confidencethreshold: 0.5, group: $group, allowcreateuserid: $allowCreateId) {
+        status,
+        id,
+        candidates {
+            id,
+            probability
+        }
+    }
+}
+
+query vectorize($faceImages: [ImageBase64Input], $faceLandmarks: [LandmarksInput]) {
+    preprocess (faces: $faceImages, landmarks: $faceLandmarks, model: DEFAULT) {
+        status,
+        image
+    }
+    
+    vectorize(model: DEFAULT) {
+        status,
+        features
+    }
+}
+
+query compareVectors($originalFeatures: EmbeddingsInput!, $candidates: [EmbeddingsInput]!) {
+    compare(original: $originalFeatures, candidates: $candidates) {
+        status,
+        mean {
+            indexes,
+            value
+        },
+        min {
+            indexes,
+            value
+        }
+    }
+}
+
+query deleteId($group: String, $userId: Uuid) {
+    management(command: REMOVEUSERID, group: $group, userid: $userId){
+        status
+    }
+}
+

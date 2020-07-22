@@ -1,0 +1,3 @@
+include ':ForgetMeNotFirebaseExt'
+include ':ForgetMeNotLib'
+rootProject.name = "ForgetMeNot"

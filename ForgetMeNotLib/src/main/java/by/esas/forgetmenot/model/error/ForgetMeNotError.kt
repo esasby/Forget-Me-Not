@@ -2,6 +2,7 @@ package by.esas.forgetmenot.model.error
 
 enum class ForgetMeNotError {
     EMPTY_RESPONSE,
+    NOT_INITIALIZED,
 
     FAILED_QUERY,
     NO_ACCESS_TOKEN,

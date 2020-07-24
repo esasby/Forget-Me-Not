@@ -2,6 +2,7 @@ package by.esas.forgetmenot.network
 
 import android.util.Log
 import by.esas.forgetmenot.BuildConfig
+import by.esas.forgetmenot.domain.ForgetMeNot
 import by.esas.forgetmenot.utils.getCurrentDateTime
 import com.apollographql.apollo.ApolloClient
 import okhttp3.*
@@ -18,9 +19,11 @@ internal object ForgetMeNotServiceProvider {
     private var expiresAt: Long = 0
 
     fun provideFaceIdService(): ForgetMeNotService {
+        ForgetMeNot.checkInitialization()
+
         val okHttpClient = provideOkHttpClient()
         val apolloClient = ApolloClient.builder()
-            .serverUrl(BuildConfig.FACE_API_URL).okHttpClient(okHttpClient).build()
+            .serverUrl(ForgetMeNot.faceApiUrl!!).okHttpClient(okHttpClient).build()
 
         return ForgetMeNotService(apolloClient, okHttpClient)
     }
@@ -54,15 +57,17 @@ internal object ForgetMeNotServiceProvider {
 
     private suspend fun getNewAccessToken(okHttpClient: OkHttpClient): Boolean =
         suspendCoroutine { continuation ->
+            ForgetMeNot.checkInitialization()
+
             val requestBody = FormBody.Builder()
                 .add("grant_type", BuildConfig.FACE_API_GRANT_TYPE)
                 .add("client_id", BuildConfig.FACE_API_CLIENT_ID)
                 .add("scope", BuildConfig.FACE_API_SCOPE)
-                .add("client_secret", BuildConfig.FACE_API_CLIENT_SECRET)
+                .add("client_secret", ForgetMeNot.faceApiSecret!!)
                 .build()
 
             val request = Request.Builder()
-                .url(BuildConfig.FACE_API_SERVER_URL)
+                .url(ForgetMeNot.faceApiTokenUrl!!)
                 .header(BuildConfig.FACE_API_HEADER_NAME, BuildConfig.FACE_API_HEADER_VALUE)
                 .post(requestBody)
                 .build()

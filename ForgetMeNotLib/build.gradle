@@ -20,14 +20,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        buildConfigField("String", "FACE_API_URL", "\"${forgetMeNotApiUrl}\"")
-
         buildConfigField "String", "FACE_API_GRANT_TYPE", '"client_credentials"'
         buildConfigField "String", "FACE_API_CLIENT_ID", '"cognitive.client"'
         buildConfigField "String", "FACE_API_SCOPE", '"cognitive_vision"'
-        buildConfigField("String", "FACE_API_CLIENT_SECRET", "\"${forgetMeNotApiClientSecret}\"")
 
-        buildConfigField("String", "FACE_API_SERVER_URL", "\"${forgetMeNotAuthTokenUrl}\"")
         buildConfigField "String", "FACE_API_HEADER_NAME", '"Content-Type"'
         buildConfigField "String", "FACE_API_HEADER_VALUE", '"application/x-www-form-urlencoded"'
     }

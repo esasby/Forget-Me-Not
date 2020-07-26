@@ -92,8 +92,8 @@ forgetMeNotManager.deleteId("userId") {
 
 ## Firebase
 We use [Firebase Face recognition ML-kit](https://firebase.google.com/docs/ml-kit/android/detect-faces) 
-together with our library and we highly advice you to do so too. Offline version will do well. For easier integration with our library
-we also created a Firebase extention for it
+together with our library, and we highly advice you to do so too. Offline version will do well. For easier integration with our library
+we also created a Firebase extension for it
 
 ## Dependency
 

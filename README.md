@@ -1,5 +1,5 @@
 <a href="https://github.com/esasby/Forget-Me-Not">
-  <img src="./Logo.svg" alt="Forget Me Not Logo" align="left" width="200">
+  <img src="./Logo.svg" alt="Forget Me Not Logo" align="left" width="230">
 </a>
 
 Forget Me Not
@@ -8,7 +8,8 @@ Forget Me Not
 **Forget Me Not** library is an Android SDK for face-recognition API, developed by [ESaS team](https://esas.by/) for own use and for companies clients. It's used for personal identification on video and photo by binding unique IDs to faces.
 
 ## Server API
-This SDK can only be used with [ESaS](https://esas.by/) server API. To get it or acquire place on our servers, please contact us on _info@esas.by_. We are open to cooperation! 
+This SDK can only be used with [ESaS](https://esas.by/) server API. To get it or acquire place on our servers, please contact us on _info@esas.by_. 
+We are open to cooperation! 
 
 ## Capabilities
 - Recognize faces on pictures

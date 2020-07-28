@@ -1,5 +1,8 @@
 package by.esas.forgetmenot.model.error
 
+/**
+ * Internal errors enum.
+ */
 enum class ForgetMeNotError {
     EMPTY_RESPONSE,
     NOT_INITIALIZED,

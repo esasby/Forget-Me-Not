@@ -24,7 +24,7 @@ We are open to cooperation!
 In your root build.gradle file add jitpack.io repository
 ~~~ Gradle
 allprojects {
-  repositories {
+	repositories {
 		...
 		maven { url 'https://jitpack.io' }
 	}

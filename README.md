@@ -34,7 +34,7 @@ allprojects {
 In app-level build.gradle file add a dependency
 ~~~ Gradle
 dependencies {
-  implementation 'com.github.esasby.Forget-Me-Not:ForgetMeNotLib:v1.6'
+  implementation 'com.github.esasby.Forget-Me-Not:ForgetMeNotLib:v1.7'
 }
 ~~~
 
@@ -54,7 +54,7 @@ Add the library dependency
 <dependency>
   <groupId>com.github.esasby.Forget-Me-Not</groupId>
   <artifactId>ForgetMeNotLib</artifactId>
-  <version>v1.6</version>
+  <version>v1.7</version>
 </dependency>
 ~~~
 
@@ -101,7 +101,7 @@ we also created a Firebase extension for it
 In app-level build.gradle file add a dependency
 ~~~ Gradle
 dependencies {
-  implementation 'com.github.esasby.Forget-Me-Not:ForgetMeNotFirebaseExt:v1.6'
+  implementation 'com.github.esasby.Forget-Me-Not:ForgetMeNotFirebaseExt:v1.7'
 }
 ~~~
 
@@ -111,7 +111,7 @@ Add the library dependency
 <dependency>
   <groupId>com.github.esasby.Forget-Me-Not</groupId>
   <artifactId>ForgetMeNotFirebaseExt</artifactId>
-  <version>v1.6</version>
+  <version>v1.7</version>
 </dependency>
 ~~~
 

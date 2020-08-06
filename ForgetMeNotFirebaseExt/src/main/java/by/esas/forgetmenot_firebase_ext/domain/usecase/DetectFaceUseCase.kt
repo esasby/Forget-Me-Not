@@ -1,5 +1,6 @@
 package by.esas.forgetmenot_firebase_ext.domain.usecase
 
+import android.util.Log
 import androidx.core.graphics.toRectF
 import by.esas.forgetmenot.domain.usecase.UseCase
 import by.esas.forgetmenot.model.ImageSize
@@ -12,7 +13,6 @@ import by.esas.forgetmenot_firebase_ext.model.ForgetMeNotFaceDetectorLimits
 import by.esas.forgetmenot_firebase_ext.model.input.DetectFaceInput
 import by.esas.forgetmenot_firebase_ext.model.result.DetectFaceResult
 import by.esas.forgetmenot_firebase_ext.utils.FaceBoundsUtils
-import by.esas.forgetmenot_firebase_ext.utils.area
 import by.esas.forgetmenot_firebase_ext.utils.cutOut
 import by.esas.forgetmenot_firebase_ext.utils.extend
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
@@ -28,7 +28,7 @@ import kotlin.math.abs
 internal class DetectFaceUseCase(
     foregroundContext: CoroutineContext,
     private val forgetMeNotFaceDetectorLimits: ForgetMeNotFaceDetectorLimits?
-) : UseCase<DetectFaceInput, DetectFaceResult>("IdRemoval", foregroundContext) {
+) : UseCase<DetectFaceInput, List<DetectFaceResult>>("IdRemoval", foregroundContext) {
 
     private val facesDetector: FirebaseDetectorWrapper
 
@@ -45,26 +45,37 @@ internal class DetectFaceUseCase(
             )
     }
 
-    override suspend fun executeOnBackground(inputParam: DetectFaceInput): DetectFaceResult {
-        val detectedFaces = detectFace(inputParam.image)
-        val biggestFace = getBiggestFace(detectedFaces)
+    override suspend fun executeOnBackground(inputParam: DetectFaceInput): List<DetectFaceResult> {
+        val detectedFaces = detectFaces(inputParam.image)
+        val results = mutableListOf<DetectFaceResult>()
 
-        if (forgetMeNotFaceDetectorLimits != null) {
-            val detectionError =
-                getDetectionErrors(biggestFace, inputParam.size, forgetMeNotFaceDetectorLimits)
-            if (detectionError != null) throw ForgetMeNotException(
-                "Face detection errors", detectionError
-            )
+        if (detectedFaces.isEmpty())
+            throw ForgetMeNotException("No faces detected", ForgetMeNotError.NO_FACES_DETECTED)
+
+        detectedFaces.forEach { face ->
+            var detectionError: ForgetMeNotError? = null
+            if (forgetMeNotFaceDetectorLimits != null) {
+                detectionError =
+                    getDetectionErrors(face, inputParam.size, forgetMeNotFaceDetectorLimits)
+                if (detectionError != null)
+                    Log.e(
+                        "ForgetMeNot", "Face detection errors",
+                        ForgetMeNotException("Face detection errors", detectionError)
+                    )
+            }
+
+            val faceBounds = face.boundingBox.toRectF().apply { extend(60f) }
+            val faceImage = inputParam.image.bitmap.cutOut(faceBounds)
+            val landmarks = getLandmarks(face)
+
+            val detectFaceResult = DetectFaceResult(faceImage, landmarks, detectionError)
+            results.add(detectFaceResult)
         }
 
-        val faceBounds = biggestFace.boundingBox.toRectF().apply { extend(60f) }
-        val faceImage = inputParam.image.bitmap.cutOut(faceBounds)
-        val landmarks = getLandmarks(biggestFace)
-
-        return DetectFaceResult(faceImage, landmarks)
+        return results
     }
 
-    private suspend fun detectFace(image: FirebaseVisionImage): List<FirebaseVisionFace> =
+    private suspend fun detectFaces(image: FirebaseVisionImage): List<FirebaseVisionFace> =
         suspendCoroutine {
             facesDetector.detectFacesSynchronous(image,
                 onSuccessListener = { faces -> it.resume(faces) },
@@ -77,10 +88,6 @@ internal class DetectFaceUseCase(
                     )
                 })
         }
-
-    private fun getBiggestFace(faces: List<FirebaseVisionFace>) =
-        faces.maxBy { it.boundingBox.area() }
-            ?: throw ForgetMeNotException("No faces detected", ForgetMeNotError.NO_FACES_DETECTED)
 
     private fun getLandmarks(face: FirebaseVisionFace): Landmarks {
         val leftEye = face.getLandmark(FirebaseVisionFaceLandmark.LEFT_EYE)!!.position

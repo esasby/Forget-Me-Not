@@ -33,11 +33,10 @@ internal class IdentifyUseCase(foregroundContext: CoroutineContext) :
 
         val query = RecognizeQuery(imagesInput, groupInput, allowNewIdInput)
         val response = ForgetMeNotClient.startQuery(query)
-
-        return getIdentificationResult(response)
+        return getIdentificationResults(response)
     }
 
-    private fun getIdentificationResult(response: Response<RecognizeQuery.Data>): List<IdentificationResult?> {
+    private fun getIdentificationResults(response: Response<RecognizeQuery.Data>): List<IdentificationResult?> {
         val data = response.data()?.identify()
         if (response.hasErrors() || data.isNullOrEmpty())
             throw ForgetMeNotException(

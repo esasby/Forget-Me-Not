@@ -36,7 +36,7 @@ class ForgetMeNotFaceDetector(private val options: ForgetMeNotFaceDetectorOption
      */
     fun detectFaces(
         firebaseImage: FirebaseVisionImage, imageSize: ImageSize,
-        callbacks: CompletionBlock<DetectFaceResult>
+        callbacks: CompletionBlock<List<DetectFaceResult>>
     ) {
         val detectFaceInputs = DetectFaceInput(firebaseImage, imageSize)
 

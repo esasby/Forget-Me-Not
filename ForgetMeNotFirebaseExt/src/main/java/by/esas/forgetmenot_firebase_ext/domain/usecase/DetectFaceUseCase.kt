@@ -66,8 +66,9 @@ internal class DetectFaceUseCase(
             val faceImage = inputParam.image.bitmap.cutOut(faceBounds)
             val landmarks = getLandmarks(face)
 
-            val detectFaceResult =
-                DetectFaceResult(face.trackingId, faceImage, landmarks, detectionError)
+            val detectFaceResult = DetectFaceResult(
+                face.trackingId, face.boundingBox.toRectF(), faceImage, landmarks, detectionError
+            )
             results.add(detectFaceResult)
         }
 

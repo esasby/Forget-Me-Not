@@ -1,6 +1,7 @@
 package by.esas.forgetmenot_firebase_ext.model.result
 
 import android.graphics.Bitmap
+import android.graphics.RectF
 import by.esas.forgetmenot.model.Landmarks
 import by.esas.forgetmenot.model.error.ForgetMeNotError
 
@@ -13,6 +14,7 @@ import by.esas.forgetmenot.model.error.ForgetMeNotError
  */
 data class DetectFaceResult internal constructor(
     val trackingId: Int,
+    val boundingBox: RectF,
     val faceImage: Bitmap,
     val faceLandmarks: Landmarks,
     val detectionError: ForgetMeNotError?

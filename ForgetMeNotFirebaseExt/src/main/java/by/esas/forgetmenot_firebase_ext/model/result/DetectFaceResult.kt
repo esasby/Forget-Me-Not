@@ -12,6 +12,7 @@ import by.esas.forgetmenot.model.error.ForgetMeNotError
  * @param detectionError Errors that occurred with this face.
  */
 data class DetectFaceResult internal constructor(
+    val trackingId: Int,
     val faceImage: Bitmap,
     val faceLandmarks: Landmarks,
     val detectionError: ForgetMeNotError?

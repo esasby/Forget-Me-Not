@@ -37,12 +37,10 @@ internal class DetectFaceUseCase(
             .setMinFaceSize(0.1f)
             .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
             .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+            .enableTracking()
             .build()
 
-        facesDetector =
-            FirebaseDetectorWrapper(
-                facesDetectorOptions
-            )
+        facesDetector = FirebaseDetectorWrapper(facesDetectorOptions)
     }
 
     override suspend fun executeOnBackground(inputParam: DetectFaceInput): List<DetectFaceResult> {
@@ -68,7 +66,8 @@ internal class DetectFaceUseCase(
             val faceImage = inputParam.image.bitmap.cutOut(faceBounds)
             val landmarks = getLandmarks(face)
 
-            val detectFaceResult = DetectFaceResult(faceImage, landmarks, detectionError)
+            val detectFaceResult =
+                DetectFaceResult(face.trackingId, faceImage, landmarks, detectionError)
             results.add(detectFaceResult)
         }
 

@@ -65,10 +65,8 @@ class ForgetMeNotIdentifier(private val options: ForgetMeNotIdentifierOptions) {
     ) {
         val identifierInputs =
             FacesWithLandmarksInput(
-                faceImages,
-                landmarks,
-                options.group,
-                allowNewId,
+                faceImages, landmarks,
+                options.group, allowNewId,
                 options.normalizationSize
             )
 
